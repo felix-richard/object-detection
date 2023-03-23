@@ -1,8 +1,12 @@
 img="";
+status = "";
+objects = [];
 function setup()
 {
     canvas=createCanvas(640,420);
     canvas.center();
+    objectDetector = ml5.objectDetector('cocossd',modelLoaded)
+    document.getElementById('status').innerHTML="Status : Detecting Objects"
 }
 function preload(){
     img=loadImage('dog_cat.jpg');
@@ -28,5 +32,19 @@ function draw()
     noFill()
     stroke("#001d3d");
     rect(250,320,170,100);
-
 }
+    function modelLoaded()
+    {
+        console.log("ModelLoaded!")
+        status = true;
+        objectDetector.detect(img,gotResult);
+    }
+    function gotResult(error,results)
+    {
+        if(error) {
+console.log(error);
+        }
+console.log(results);
+object=results;
+    }
+
